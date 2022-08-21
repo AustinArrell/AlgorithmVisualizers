@@ -9,8 +9,8 @@ var canvasWidth = 1024;
 var canvasHeight = 480;
 var arraySize = 100;
 
-var stepSortButton = document.getElementById("stepSortButton");
-stepSortButton.addEventListener("click", stepSort);
+var bubbleIterations = 1;
+var bubbleIterationSwap = false;
 
 var fullSortButton = document.getElementById("fullSortButton");
 fullSortButton.addEventListener("click", fullSort);
@@ -38,23 +38,52 @@ function setup() {
 }
 
 async function draw() { 
-    if(index < numArray.length && sortReady == true)
+    if(sortReady == true)
         {
-            visualizeArray(numArray, index);
-            SelectionSort(index);
+            visualizeArray();
+            BubbleSort();
             index+=1;
         }else
         { 
+            index = 0;
+            bubbleIterations = 1;
             sortReady = false; 
         }
 }
 
+function BubbleSort()
+{   
+    fill("#b58900");
+    rect(index*widthOfRect,rectY,widthOfRect,-numArray[index]);   
+    if(index > numArray.length - bubbleIterations)
+    {
+        if(!bubbleIterationSwap)
+        {
+            bubbleIterations += numArray.length;
+            visualizeArray();
+            sortReady = false;
+        }
+        bubbleIterationSwap = false;
+        bubbleIterations += 1;
+        index = -1;
+    }
+    if(numArray[index] > numArray[index+1])
+    {
+        let temp = numArray[index];
+        numArray[index] = numArray[index+1];
+        numArray[index+1] = temp;
+        bubbleIterationSwap = true;
+    }
+    
+}
+
 function generateArraySetup()
 {
-    index = 0;
+    sortReady = false;
+    resetSort();
     generateArray();
     widthOfRect = (canvas.width/numArray.length);
-    visualizeArray(numArray);
+    visualizeArray();
 }
 
 function generateArray()
@@ -83,67 +112,33 @@ function frameSliderChange()
 
 function fullSort()
 {
-    if(sortReady)
-        resetSort();
+    resetSort();
     sortReady = true;
-}
-
-function stepSort()
-{
-    sortReady = false;
-    visualizeArray(numArray);
-    
-    if(index < numArray.length-1)
-    {
-        SelectionSort(index);
-        index+=1;
-    }
 }
 
 function resetSort()
 {
     sortReady = false;
+    bubbleIterationSwap = false;
+    bubbleIterations = 1;
     numArray = resetArray.slice();
     index = 0;
-    visualizeArray(numArray);
+    visualizeArray();
 }
 
-function visualizeArray(array){
+function visualizeArray(){
     background("#839496"); 
-    for(var i =0; i< array.length; i++)
+    for(var i =0; i< numArray.length; i++)
     {
         fill("#268bd2");
-        rect(i*widthOfRect,rectY,widthOfRect,-array[i]);
+        rect(i*widthOfRect,rectY,widthOfRect,-numArray[i]);
         
-        if(i < index)
+        if(i > numArray.length - bubbleIterations)
         {
             fill("#2aa198");
-            rect(i*widthOfRect,rectY,widthOfRect,-array[i]);
+            rect(i*widthOfRect,rectY,widthOfRect,-numArray[i]);
         }
     }
 }
 
-function SelectionSort(startIndex)
-{   
-    // Highlight the rectangle at the startIndex
-    fill("#cb4b16");
-    rect(startIndex*widthOfRect,rectY,widthOfRect,-numArray[startIndex]); 
-    var lowestNum = numArray[startIndex];
-    var indexOfLowest = startIndex;
-    for(var i = startIndex; i< numArray.length; i++)
-    {
-        rect(startIndex*widthOfRect,rectY,widthOfRect,-numArray[startIndex]); 
-        if(numArray[i] < lowestNum)
-        {
-            lowestNum = numArray[i];
-            indexOfLowest = i;
-        }
-    }
-
-    // Highlight the rectangle that is the smallest
-    fill("#b58900");
-    rect(indexOfLowest*widthOfRect,rectY,widthOfRect,-numArray[indexOfLowest]); 
-    numArray[indexOfLowest] = numArray[startIndex];
-    numArray[startIndex] = lowestNum;
-}
 
