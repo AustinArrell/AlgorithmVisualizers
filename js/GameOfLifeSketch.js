@@ -110,86 +110,76 @@ function simulateLife()
 function countNeighbors(posX, posY)
 {
     var count = 0;
-    
-    var index;
 
     // Right
-    index = posY*gridWidth + posX+1
-    if(index >= 0 && index <= cells.length-1){
+    if(posX < gridWidth-1){
+        var index = posY*gridWidth + posX+1
         if(cells[index].isActive)
         {
             count +=1;
-            console.log("Right");
         }
     }
 
     // Left
-    index = posY*gridWidth + posX-1
-    if(index >= 0 && index <= cells.length-1){
+    if(posX > 0){
+        var index = posY*gridWidth + posX-1
         if(cells[index].isActive)
         {
             count +=1;
-            console.log("Left");
         }
     }
 
     // Top
-    index = (posY-1)*gridWidth + posX
-    if(index >= 0 && index <= cells.length-1){
+    if(posY > 0){
+        var index = (posY-1)*gridWidth + posX
         if(cells[index].isActive)
         {
             count +=1;
-            console.log("Top");
         }
     }
 
     // Bottom
-    index = (posY+1)*gridWidth + posX
-    if(index >= 0 && index <= cells.length-1){
+    if(posY < gridWidth-1){
+        var index = (posY+1)*gridWidth + posX
         if(cells[index].isActive)
         {
             count +=1;
-            console.log("Bottom");
         }
     }
 
     // Top Left
-    index = (posY-1)*gridWidth + posX-1
-    if(index >= 0 && index <= cells.length-1){
+    if(posY > 0 && posX > 0){
+        var index = (posY-1)*gridWidth + (posX-1)
         if(cells[index].isActive)
         {
             count +=1;
-            console.log("Top Left");
         }
     }
 
     // Top Right
-    index = (posY-1)*gridWidth + posX+1
-    if(index >= 0 && index <= cells.length-1){
+    if(posY > 0 && posX < gridWidth-1){
+        var index = (posY-1)*gridWidth + (posX+1)
         if(cells[index].isActive)
         {
             count +=1;
-            console.log("Top Right");
         }
     }
 
     // Bottom Left
-    index = (posY+1)*gridWidth + posX-1
-    if(index >= 0 && index <= cells.length-1){
+    if(posY < gridWidth-1 && posX > 0){
+        var index = (posY+1)*gridWidth + (posX-1)
         if(cells[index].isActive)
         {
             count +=1;
-            console.log("Bottom Left");
         }
     }
 
     //Bottom Right 
-    index = (posY+1)*gridWidth + posX+1
-    if(index >= 0 && index <= cells.length-1){
+    if(posY < gridWidth-1 && posX < gridWidth-1){
+        var index = (posY+1)*gridWidth + (posX+1)
         if(cells[index].isActive)
         {
             count +=1;
-            console.log("Bottom Right");
         }
     }
 
