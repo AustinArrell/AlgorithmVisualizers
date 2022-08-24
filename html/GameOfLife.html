@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>Bubble Sort</title>
+    <script src="../js/p5.js"></script>
+    <script src="../js/htmlimporter.js"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">  
+</head>
+<body>
+    <script>HTMLImporter.import("navbar.html");</script>
+    <div style="display:flex; justify-content: center; margin-top:10px;">
+        <div class="centered" style="margin-bottom:10px; margin-right: 10px; ">
+            <form>
+                <h4 class="centered">Simulation Controls</h4>
+                <div class="centered">
+                    <button style="margin-left:10px;" id="simulateButton" type="button" class="btn btn-primary">Simulate</button>
+                    <button style="margin-left:10px;" id="stopSimulateButton" type="button" class="btn btn-primary">Stop Simulation</button>
+                </div>
+            </form>
+        </div>
+        <div id="canvasContainer" class="centered"></div>
+    </div>
+    <script defer src="../js/GameOfLifeSketch.js"></script>
+</body>
+</html>
