@@ -1,6 +1,6 @@
 var canvasWidth = 800;
 var canvasHeight = 800;
-var gridWidth = 3;
+var gridWidth = 50;
 var cellSize = canvasWidth/gridWidth;
 
 var cells = [];
@@ -12,7 +12,6 @@ simulateButton.addEventListener("click", function(){simulate = true;});
 var stopSimulateButton = document.getElementById("stopSimulateButton");
 stopSimulateButton.addEventListener("click", function(){simulate = false;});
 
-
 class Cell
 {
     constructor(posX, posY)
@@ -20,16 +19,24 @@ class Cell
         this.isActive = false;
         this.posX = posX;
         this.posY = posY;
-        this.neighborCount = 0;
+        this.neighborCount = 0
 
         // Any live cell with two or three live neighbours survives.
         // Any dead cell with three live neighbours becomes a live cell.
         // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+        this.countNeighborCells = function(){
+            this.neighborCount = countNeighbors(this.posX/cellSize,this.posY/cellSize);
+        }
         this.simulateCell =function(){
-            if(this.isActive)
+            if(!this.isActive && this.neighborCount >= 3)
             {
-                console.log("I have :" + countNeighbors(this.posX/cellSize,this.posY/cellSize) + " neighbors.");
+                this.isActive = true;
             }
+            if(!(this.neighborCount == 2) && !(this.neighborCount == 3))
+            {
+                this.isActive = false;
+            }
+            
         }
     }  
 }
@@ -37,6 +44,7 @@ class Cell
 function setup()
 {
     noStroke();
+    frameRate(120);
     let canvas = createCanvas(canvasWidth,canvasHeight);
     canvas.parent('canvasContainer');
     
@@ -54,7 +62,10 @@ function draw()
     console.log(simulate)
     if(simulate)
     {
+        frameRate(3);
         simulateLife();
+    }else{
+        frameRate(120);
     }
     activateClickedCells();
     background("#839496"); 
@@ -79,7 +90,7 @@ function drawCells()
         rect(cells[i].posX, cells[i].posY , cellSize, cellSize);
         textSize(32);
         fill(255,0,0);
-        text(i, cells[i].posX+40, cells[i].posY+40);
+        text(cells[i].isActive, cells[i].posX+40, cells[i].posY+40);
         
     }
 }
@@ -101,6 +112,11 @@ function activateClickedCells()
 
 function simulateLife()
 {
+    
+    for(var i = 0; i < cells.length; i++)
+    {
+        cells[i].countNeighborCells();
+    }
     for(var i = 0; i < cells.length; i++)
     {
         cells[i].simulateCell();
